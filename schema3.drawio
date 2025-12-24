@@ -1,0 +1,85 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36" version="29.2.9">
+  <diagram name="Вариант 3" id="Вариант_3_—_+_Кеширование_(Redis_перед_mongos)">
+    <mxGraphModel dx="1665" dy="972" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="10" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;" value="App / Services" vertex="1">
+          <mxGeometry height="60" width="180" x="80" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="11" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="pymongo-api / backend" vertex="1">
+          <mxGeometry height="60" width="200" x="320" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="12" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#fff2cc;" value="Redis Cache" vertex="1">
+          <mxGeometry height="80" width="90" x="580" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="13" edge="1" parent="1" source="10" target="11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="14" edge="1" parent="1" source="11" target="12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="15" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;" value="mongos routers, 3 nodes" vertex="1">
+          <mxGeometry height="60" width="160" x="300" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="17" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#dae8fc;" value="Config Server, 3 nodes" vertex="1">
+          <mxGeometry height="80" width="120" x="520" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="18" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;size=15;fillColor=#f8cecc;" value="Shard 1 Primary" vertex="1">
+          <mxGeometry height="80" width="110" x="220" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="19" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;size=15;" value="Shard 1 Secondary" vertex="1">
+          <mxGeometry height="80" width="110" x="160" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="20" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;size=15;" value="Shard 1 Secondary" vertex="1">
+          <mxGeometry height="80" width="110" x="280" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="21" edge="1" parent="1" source="15" target="18">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="22" edge="1" parent="1" source="18" style="dashed=1;endArrow=none;" target="19">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="23" edge="1" parent="1" source="18" style="dashed=1;endArrow=none;" target="20">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="24" edge="1" parent="1" source="19" style="dashed=1;endArrow=none;" target="20">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="25" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;size=15;fillColor=#f8cecc;" value="Shard 2 Primary" vertex="1">
+          <mxGeometry height="80" width="110" x="520" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="26" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;size=15;" value="Shard 2 Secondary" vertex="1">
+          <mxGeometry height="80" width="110" x="460" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="27" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;size=15;" value="Shard 2 Secondary" vertex="1">
+          <mxGeometry height="80" width="110" x="580" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="28" edge="1" parent="1" source="15" target="25">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="29" edge="1" parent="1" source="25" style="dashed=1;endArrow=none;" target="26">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="30" edge="1" parent="1" source="25" style="dashed=1;endArrow=none;" target="27">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="31" edge="1" parent="1" source="26" style="dashed=1;endArrow=none;" target="27">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="-j6_HMOb_stYAAGoi5aX-31" edge="1" parent="1" source="11" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="15" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="780" y="520" as="sourcePoint" />
+            <mxPoint x="830" y="470" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="x2pbWO0cTHvwxdmV3-4o-31" edge="1" parent="1" source="15" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" target="17" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="740" y="420" as="sourcePoint" />
+            <mxPoint x="790" y="370" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
