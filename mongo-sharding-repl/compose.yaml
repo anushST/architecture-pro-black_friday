@@ -1,0 +1,200 @@
+services:
+  # APP
+  pymongo_api:
+    container_name: pymongo_api
+    build: 
+      context: api_app
+      dockerfile: Dockerfile
+    depends_on:
+      - mongos1
+      - mongos2
+      - mongos3
+    ports:
+      - 8080:8080
+    networks: [ backend ]
+    environment:
+      MONGODB_URL: "mongodb://mongos1:27020,mongos2:27020,mongos3:27020"
+      MONGODB_DATABASE_NAME: "somedb"
+
+  # CONFIG SERVERS
+  cfg1:
+    image: dh-mirror.gitverse.ru/mongo:latest
+    container_name: cfg1
+    command: [
+      "mongod",
+      "--configsvr",
+      "--replSet", "config_rs",
+      "--bind_ip_all",
+      "--port", "27017"
+    ]
+    volumes:
+      - cfg1-data:/data/db
+    networks: [ backend ]
+
+  cfg2:
+    image: dh-mirror.gitverse.ru/mongo:latest
+    container_name: cfg2
+    command: [
+      "mongod",
+      "--configsvr",
+      "--replSet", "config_rs",
+      "--bind_ip_all",
+      "--port", "27017"
+    ]
+    volumes:
+      - cfg2-data:/data/db
+    networks: [ backend ]
+
+  cfg3:
+    image: dh-mirror.gitverse.ru/mongo:latest
+    container_name: cfg3
+    command: [
+      "mongod",
+      "--configsvr",
+      "--replSet", "config_rs",
+      "--bind_ip_all",
+      "--port", "27017"
+    ]
+    volumes:
+      - cfg3-data:/data/db
+    networks: [ backend ]
+
+  # SHARD 1 (3 replicas)
+  shard1a:
+    image: dh-mirror.gitverse.ru/mongo:latest
+    container_name: shard1a
+    command: [
+      "mongod",
+      "--shardsvr",
+      "--replSet", "shard1_rs",
+      "--bind_ip_all",
+      "--port", "27018"
+    ]
+    volumes:
+      - shard1a-data:/data/db
+    networks: [ backend ]
+
+  shard1b:
+    image: dh-mirror.gitverse.ru/mongo:latest
+    container_name: shard1b
+    command: [
+      "mongod",
+      "--shardsvr",
+      "--replSet", "shard1_rs",
+      "--bind_ip_all",
+      "--port", "27018"
+    ]
+    volumes:
+      - shard1b-data:/data/db
+    networks: [ backend ]
+
+  shard1c:
+    image: dh-mirror.gitverse.ru/mongo:latest
+    container_name: shard1c
+    command: [
+      "mongod",
+      "--shardsvr",
+      "--replSet", "shard1_rs",
+      "--bind_ip_all",
+      "--port", "27018"
+    ]
+    volumes:
+      - shard1c-data:/data/db
+    networks: [ backend ]
+
+  # SHARD 2 (3 replicas)
+  shard2a:
+    image: dh-mirror.gitverse.ru/mongo:latest
+    container_name: shard2a
+    command: [
+      "mongod",
+      "--shardsvr",
+      "--replSet", "shard2_rs",
+      "--bind_ip_all",
+      "--port", "27019"
+    ]
+    volumes:
+      - shard2a-data:/data/db
+    networks: [ backend ]
+
+  shard2b:
+    image: dh-mirror.gitverse.ru/mongo:latest
+    container_name: shard2b
+    command: [
+      "mongod",
+      "--shardsvr",
+      "--replSet", "shard2_rs",
+      "--bind_ip_all",
+      "--port", "27019"
+    ]
+    volumes:
+      - shard2b-data:/data/db
+    networks: [ backend ]
+
+  shard2c:
+    image: dh-mirror.gitverse.ru/mongo:latest
+    container_name: shard2c
+    command: [
+      "mongod",
+      "--shardsvr",
+      "--replSet", "shard2_rs",
+      "--bind_ip_all",
+      "--port", "27019"
+    ]
+    volumes:
+      - shard2c-data:/data/db
+    networks: [ backend ]
+
+  # MONGOS ROUTERS
+  mongos1:
+    image: dh-mirror.gitverse.ru/mongo:latest
+    container_name: mongos1
+    command: [
+      "mongos",
+      "--configdb",
+      "config_rs/cfg1:27017,cfg2:27017,cfg3:27017",
+      "--bind_ip_all",
+      "--port", "27020"
+    ]
+    ports:
+      - "27020:27020"
+    networks: [ backend ]
+
+  mongos2:
+    image: dh-mirror.gitverse.ru/mongo:latest
+    container_name: mongos2
+    command: [
+      "mongos",
+      "--configdb",
+      "config_rs/cfg1:27017,cfg2:27017,cfg3:27017",
+      "--bind_ip_all",
+      "--port", "27020"
+    ]
+    networks: [ backend ]
+
+  mongos3:
+    image: dh-mirror.gitverse.ru/mongo:latest
+    container_name: mongos3
+    command: [
+      "mongos",
+      "--configdb",
+      "config_rs/cfg1:27017,cfg2:27017,cfg3:27017",
+      "--bind_ip_all",
+      "--port", "27020"
+    ]
+    networks: [ backend ]
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  cfg1-data:
+  cfg2-data:
+  cfg3-data:
+  shard1a-data:
+  shard1b-data:
+  shard1c-data:
+  shard2a-data:
+  shard2b-data:
+  shard2c-data:
