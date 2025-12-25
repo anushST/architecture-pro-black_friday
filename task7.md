@@ -16,14 +16,16 @@
       quantity: Int32
     }
   ],
-  status: String, // "pending", "processing", "shipped", "delivered", "cancelled"
+  status: String,
   total_amount: Decimal128,
-  geo_zone: String // "moscow", "spb", "ekb", "kgd"
+  geo_zone: String
 }
 ```
 ### Стратегия шардирования
 **Шард-ключ**: { user_id: 1, created_at: 1 }
+
 **Тип**: Compound ключ (хешированный user_id опционально)
+
 Альтернатива: { user_id: "hashed" } если нужно более равномерное распределение.
 
 ### Обоснование
@@ -44,7 +46,7 @@ sh.shardCollection("mobile_world.orders", { user_id: 1, created_at: 1 })
   _id: ObjectId,
   product_id: String,
   name: String,
-  category: String, // "electronics", "audio", "books"
+  category: String,
   price: Decimal128,
   stock: [
     {
@@ -60,6 +62,7 @@ sh.shardCollection("mobile_world.orders", { user_id: 1, created_at: 1 })
 ```
 ### Стратегия шардирования
 **Шард-ключ**: { product_id: "hashed" }
+
 **Тип**: Hashed
 
 ### Обоснование
@@ -79,23 +82,24 @@ sh.shardCollection("mobile_world.products", { product_id: "hashed" })
 ```js
 {
   _id: ObjectId,
-  user_id: String, // null для гостей
-  session_id: String, // для гостевых корзин
+  user_id: String,
+  session_id: String,
   items: [
     {
       product_id: String,
       quantity: Int32
     }
   ],
-  status: String, // "active", "ordered", "abandoned"
+  status: String,
   created_at: ISODate,
   updated_at: ISODate,
-  expires_at: ISODate // TTL индекс
+  expires_at: ISODate
 }
 ```
 
 ### Стратегия шардирования
 **Шард-ключ**: { user_id: 1, session_id: 1 }
+
 **Тип**: Compound с поддержкой null
 
 Альтернатива: { _id: "hashed" } если большинство корзин гостевые.

@@ -51,17 +51,23 @@
 
 ### Products
 Каталог/поиск: secondaryPreferred (fallback на primary если secondary недоступна)
+
 Проверка остатков: primary
+
 Карточка товара: secondaryPreferred
 
 ### Orders
 История заказов: secondaryPreferred
+
 Статус заказа: secondaryPreferred
+
 Создание/обработка: primary
+
 Аналитика: secondary (можно nearest для географически распределённых систем)
 
 ### Carts
 Отображение корзины: secondaryPreferred
+
 Все операции изменения: primary (по умолчанию)
 
 ## Допустимая задержка репликации
